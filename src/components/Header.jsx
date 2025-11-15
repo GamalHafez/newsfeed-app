@@ -45,7 +45,7 @@ export const Header = ({ setQuery }) => {
   const handleInputChange = (e) => setQuery(e.currentTarget.value);
 
   return (
-    <AppBar position="static">
+    <AppBar sx={{ mb: -2 }} position="static">
       <Toolbar>
         <Typography variant="h6">NewsFeed App</Typography>
         <Search>
