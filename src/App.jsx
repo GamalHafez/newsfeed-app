@@ -1,5 +1,8 @@
 import { Header, Layout, NewsFeed } from "@/components";
 import { useEffect, useState } from "react";
+import { debounce } from "lodash";
+
+const DEBOUNCE_DELAY = 500;
 
 const apiUrl = (query = "") =>
   `https://gnews.io/api/v4/top-headlines?category=general&apikey=${
@@ -24,6 +27,14 @@ export default function App() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const debouncedLoadData = debounce((newQuery) => {
+    setLoading(true);
+    loadData(newQuery).then((newArticles) => {
+      setArticles(newArticles);
+      setLoading(false);
+    });
+  }, DEBOUNCE_DELAY);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
@@ -33,17 +44,9 @@ export default function App() {
     });
   }, []);
 
-  const handleQueryChange = (newQuery) => {
-    setLoading(true);
-    loadData(newQuery).then((newArticles) => {
-      setArticles(newArticles);
-      setLoading(false);
-    });
-  };
-
   return (
     <Layout>
-      <Header setQuery={handleQueryChange} />
+      <Header setQuery={debouncedLoadData} />
       <NewsFeed articles={articles} loading={loading} />
     </Layout>
   );
