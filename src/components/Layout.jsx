@@ -16,8 +16,6 @@ export function Layout({ children }) {
     <Box
       display="flex"
       flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
       minHeight="100vh"
       maxWidth="700px"
       margin="auto"
