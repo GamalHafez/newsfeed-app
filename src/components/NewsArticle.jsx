@@ -8,7 +8,7 @@ export const NewsArticle = ({ title, description, author, publishedAt }) => {
   return (
     <StyledCard>
       <CardActionArea>
-        <CardContent>
+        <CardContent dir="rtl">
           <Typography gutterBottom variant="h6" component="div">
             {title}
           </Typography>
