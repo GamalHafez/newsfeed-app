@@ -1,4 +1,4 @@
-import { NewsArticle } from "@/components";
+import { LoadingArticle, NewsArticle } from "@/components";
 import { Box, CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
@@ -16,20 +16,10 @@ export const NewsFeed = ({ articles, loading, error }) => {
     );
   }
 
-  if (loading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="50vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+  if (loading)
+    return [...Array(4)].map((_, index) => <LoadingArticle key={index} />);
 
-  if (!articles.length) {
+  if (!loading && !articles.length) {
     return (
       <Typography
         align="center"

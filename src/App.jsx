@@ -89,14 +89,14 @@ export default function App() {
           variant="outlined"
           onClick={() => handlePageChange("Previous")}
           // eslint-disable-next-line react-hooks/refs
-          disabled={pageNumber.current === 1}
+          disabled={loading || pageNumber.current === 1}
         >
           Previous
         </Button>
         <Button
           variant="outlined"
           onClick={() => handlePageChange("Next")}
-          disabled={articles.length < 4}
+          disabled={loading || articles.length < 4}
         >
           Next
         </Button>
