@@ -6,10 +6,10 @@ import styled from "@emotion/styled";
 
 const DEBOUNCE_DELAY = 500;
 
-const apiUrl = (query = "", page = 1) =>
+const apiUrl = (query = "", page = 1, category = "general") =>
   `https://gnews.io/api/v4/top-headlines?category=general&apikey=${
     import.meta.env.VITE_GNEWS_API_KEY
-  }&q=${query}&lang=ar&country=eg&max=4&page=${page}`;
+  }&q=${query}&lang=ar&category=${category}&country=eg&max=4&page=${page}`;
 
 const Footer = styled("div")(({ theme }) => ({
   marginBlockStart: -10,
@@ -21,13 +21,14 @@ const Footer = styled("div")(({ theme }) => ({
 export default function App() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState("general");
   const [error, setError] = useState("");
   const pageNumber = useRef(1);
   const queryValue = useRef("");
 
-  async function loadData() {
+  async function loadData(category = "general") {
     const response = await fetch(
-      apiUrl(queryValue.current, pageNumber.current)
+      apiUrl(queryValue.current, pageNumber.current, category)
     );
     const data = await response.json();
     if (data?.errors?.length) throw new Error(data.errors[0]);
@@ -42,9 +43,9 @@ export default function App() {
     });
   }
 
-  const fetchAndUpdateArticles = () => {
+  const fetchAndUpdateArticles = (category = "general") => {
     setLoading(true);
-    loadData()
+    loadData(category)
       .then((newArticles) => {
         setArticles(newArticles);
         setError("");
@@ -80,9 +81,19 @@ export default function App() {
     fetchAndUpdateArticles();
   };
 
+  const onCategoryChange = (e) => {
+    setCategory(e.target.value);
+    pageNumber.current = 1;
+    fetchAndUpdateArticles(e.target.value);
+  };
+
   return (
     <Layout>
-      <Header setQuery={handleSearch} />
+      <Header
+        setQuery={handleSearch}
+        category={category}
+        onCategoryChange={onCategoryChange}
+      />
       <NewsFeed articles={articles} error={error} loading={loading} />
       <Footer>
         <Button
