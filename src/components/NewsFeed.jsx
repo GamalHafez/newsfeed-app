@@ -2,7 +2,20 @@ import { NewsArticle } from "@/components";
 import { Box, CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
-export const NewsFeed = ({ articles, loading }) => {
+export const NewsFeed = ({ articles, loading, error }) => {
+  if (error) {
+    return (
+      <Typography
+        align="center"
+        color="error"
+        marginBlockStart={8}
+        variant="h6"
+      >
+        {error}
+      </Typography>
+    );
+  }
+
   if (loading) {
     return (
       <Box

@@ -21,6 +21,7 @@ const Footer = styled("div")(({ theme }) => ({
 export default function App() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const pageNumber = useRef(1);
   const queryValue = useRef("");
 
@@ -29,6 +30,7 @@ export default function App() {
       apiUrl(queryValue.current, pageNumber.current)
     );
     const data = await response.json();
+    if (data?.errors?.length) throw new Error(data.errors[0]);
     return data.articles.map((article) => {
       const {
         title,
@@ -45,6 +47,13 @@ export default function App() {
     loadData()
       .then((newArticles) => {
         setArticles(newArticles);
+        setError("");
+      })
+      .catch((error) => {
+        setArticles([]);
+        console.log(error);
+
+        setError(error.message);
       })
       .finally(() => setLoading(false));
   };
@@ -74,7 +83,7 @@ export default function App() {
   return (
     <Layout>
       <Header setQuery={handleSearch} />
-      <NewsFeed articles={articles} loading={loading} />
+      <NewsFeed articles={articles} error={error} loading={loading} />
       <Footer>
         <Button
           variant="outlined"
