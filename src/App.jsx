@@ -44,6 +44,7 @@ export default function App() {
   }
 
   const fetchAndUpdateArticles = (category = "general") => {
+    console.log({ category }); ///////
     setLoading(true);
     loadData(category)
       .then((newArticles) => {
@@ -52,8 +53,6 @@ export default function App() {
       })
       .catch((error) => {
         setArticles([]);
-        console.log(error);
-
         setError(error.message);
       })
       .finally(() => setLoading(false));
@@ -62,7 +61,9 @@ export default function App() {
   const handleSearch = (newQuery) => {
     pageNumber.current = 1;
     queryValue.current = newQuery;
-    debounce(fetchAndUpdateArticles, DEBOUNCE_DELAY);
+    // console.log({ newQuery });
+    // console.log(queryValue.current);
+    debounce(() => fetchAndUpdateArticles(), DEBOUNCE_DELAY)();
   };
 
   useEffect(fetchAndUpdateArticles, []);
@@ -90,7 +91,7 @@ export default function App() {
   return (
     <Layout>
       <Header
-        setQuery={handleSearch}
+        handleSearch={handleSearch}
         category={category}
         onCategoryChange={onCategoryChange}
       />

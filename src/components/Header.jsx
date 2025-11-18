@@ -76,9 +76,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   },
 }));
 
-export const Header = ({ setQuery, category, onCategoryChange }) => {
-  const handleInputChange = (e) => setQuery(e.currentTarget.value);
-
+export const Header = ({ handleSearch, category, onCategoryChange }) => {
   return (
     <AppBar sx={{ mb: -2 }} position="static">
       <Toolbar>
@@ -101,7 +99,7 @@ export const Header = ({ setQuery, category, onCategoryChange }) => {
           <StyledInputBase
             placeholder="Search…"
             inputProps={{ "aria-label": "search" }}
-            onChange={handleInputChange}
+            onChange={(e) => handleSearch(e.target.value)}
           />
         </Search>
       </Toolbar>
