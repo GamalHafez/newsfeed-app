@@ -7,9 +7,7 @@ import styled from "@emotion/styled";
 const DEBOUNCE_DELAY = 500;
 
 const apiUrl = (query = "", page = 1, category = "general") =>
-  `https://gnews.io/api/v4/top-headlines?category=general&apikey=${
-    import.meta.env.VITE_GNEWS_API_KEY
-  }&q=${query}&lang=ar&category=${category}&country=eg&max=4&page=${page}`;
+  `/api/news?q=${query}&page=${page}&category=${category}&lang=ar&country=eg&max=4`;
 
 const Footer = styled("div")(({ theme }) => ({
   marginBlockStart: -10,
